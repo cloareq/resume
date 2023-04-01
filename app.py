@@ -1,66 +1,83 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import json
-from pathlib import Path
+import os
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        # Get user data from form
-        personal_info = {
-            'name': request.form.get('name'),
-            'surname': request.form.get('surname'),
-            'location': request.form.get('location'),
-            'email': request.form.get('email'),
-            'website': request.form.get('website'),
-        }
-
-        # Save user data and redirect to resume page
-        return redirect(url_for('resume', **personal_info))
     return render_template('index.html')
 
 @app.route('/build_resume', methods=['POST'])
 def build_resume():
-    school_names = request.form.getlist('school_name[]')
-    school_locations = request.form.getlist('school_location[]')
-    degrees = request.form.getlist('degree[]')
-    majors = request.form.getlist('major[]')
-    gpas = request.form.getlist('gpa[]')
-    start_dates = request.form.getlist('start_date[]')
-    end_dates = request.form.getlist('end_date[]')
+    data = {
+        'name': request.form['name'],
+        'surname': request.form['surname'],
+        'location': request.form['location'],
+        'email': request.form['email'],
+        'website': request.form['website'],
+        'education': get_education_data(request.form),
+        'experience': get_experience_data(request.form)
+    }
 
-    schools = []
+    save_resume_data(data)
+
+    return 'Resume saved!'
+
+def get_education_data(form):
+    school_names = form.getlist('school_name[]')
+    school_locations = form.getlist('school_location[]')
+    degrees = form.getlist('degree[]')
+    majors = form.getlist('major[]')
+    gpas = form.getlist('gpa[]')
+    start_dates = form.getlist('start_date[]')
+    end_dates = form.getlist('end_date[]')
+
+    education_data = []
     for i in range(len(school_names)):
-        schools.append({
+        education = {
             'school_name': school_names[i],
             'school_location': school_locations[i],
             'degree': degrees[i],
             'major': majors[i],
             'gpa': gpas[i],
             'start_date': start_dates[i],
-            'end_date': end_dates[i],
-        })
+            'end_date': end_dates[i]
+        }
+        education_data.append(education)
 
-    data = {
-        'profile': {
-            'name': request.form.get('name'),
-            'surname': request.form.get('surname'),
-            'location': request.form.get('location'),
-            'email': request.form.get('email'),
-            'website': request.form.get('website'),
-        },
-        'education': schools
-    }
-    
-    # Save data to a JSON file
-    json_file_path = Path('resumes') / f"{data['profile']['name']}_{data['profile']['surname']}.json"
-    json_file_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    with open(json_file_path, 'w') as file:
-        json.dump(data, file, indent=4)
-    
-    return f"Resume saved as {json_file_path.name}"
+    return education_data
+
+def get_experience_data(form):
+    company_names = form.getlist('company_name[]')
+    job_titles = form.getlist('job_title[]')
+    job_locations = form.getlist('job_location[]')
+    start_dates = form.getlist('start_date[]')
+    end_dates = form.getlist('end_date[]')
+
+    experience_data = []
+    for i in range(len(company_names)):
+        experience = {
+            'company_name': company_names[i],
+            'job_title': job_titles[i],
+            'job_location': job_locations[i],
+            'start_date': start_dates[i],
+            'end_date': end_dates[i]
+        }
+        experience_data.append(experience)
+
+    return experience_data
+
+def save_resume_data(data):
+    # Create the resumes folder if it doesn't exist
+    if not os.path.exists('resumes'):
+        os.makedirs('resumes')
+
+    filename = f"{data['name'].lower()}_{data['surname'].lower()}.json"
+    filepath = os.path.join('resumes', filename)
+
+    with open(filepath, 'w') as f:
+        json.dump(data, f, indent=4)
 
 
 

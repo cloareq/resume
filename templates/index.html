@@ -12,6 +12,7 @@
     <nav>
         <button onclick="showSection('profile-section')">Profile</button>
         <button onclick="showSection('education-section')">Education</button>
+        <button onclick="showSection('experience-section')">Experiences</button>
     </nav>
     <form id="resume-form">
         <div id="profile-section" style="display: none;">
@@ -60,6 +61,30 @@
                 <button type="button" onclick="addSchool()">Add School</button>
             </div>
         </div>
+
+        <div id="experience-section" style="display: none;">
+            <div id="experience-fields">
+                <label for="company_name">Company Name:</label>
+                <input type="text" name="company_name[]" required>
+                <br>
+                <label for="job_title">Job Title:</label>
+                <input type="text" name="job_title[]" required>
+                <br>
+                <label for="job_location">Job Location:</label>
+                <input type="text" name="job_location[]" required>
+                <br>
+                <label for="start_date">Start Date:</label>
+                <input type="date" name="start_date[]" required>
+                <br>
+                <label for="end_date">End Date:</label>
+                <input type="date" name="end_date[]" required>
+                <br>
+            </div>
+            <div id="add-experience-button-container">
+                <button type="button" onclick="addExperience()">Add Experience</button>
+            </div>
+        </div>
+        
         <button type="button" onclick="buildResume()">Build Resume</button>
     </form>
 </body>

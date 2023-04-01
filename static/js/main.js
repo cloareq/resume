@@ -1,7 +1,13 @@
-function showSection(section) {
-    document.getElementById('profile-section').style.display = 'none';
-    document.getElementById('education-section').style.display = 'none';
-    document.getElementById(section).style.display = 'block';
+function showSection(sectionId) {
+    const sections = ['profile-section', 'education-section', 'experience-section'];
+    for (const section of sections) {
+        const element = document.getElementById(section);
+        if (sectionId === section) {
+            element.style.display = '';
+        } else {
+            element.style.display = 'none';
+        }
+    }
 }
 
 function addSchool() {
@@ -35,6 +41,36 @@ function addSchool() {
     educationSection.appendChild(document.getElementById('add-school-button-container'));
 }
 
+function addExperience() {
+    const experienceFields = document.getElementById('experience-fields');
+    const newFields = experienceFields.cloneNode(true);
+    const hr = document.createElement('hr');
+    const experienceSection = document.getElementById('experience-section');
+
+    // Check if there are any experiences already added
+    const experiences = experienceSection.querySelectorAll('#experience-fields');
+    if (experiences.length > 0) {
+        experienceSection.appendChild(hr);
+    }
+
+    experienceSection.appendChild(newFields);
+
+    // Add a "Remove Experience" button next to the new experience form
+    if (experiences.length > 0) {
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.innerText = 'Remove Experience';
+        removeButton.onclick = function() {
+            // Remove the experience form and the "Remove Experience" button
+            experienceSection.removeChild(hr);
+            experienceSection.removeChild(newFields);
+            experienceSection.removeChild(removeButton);
+        };
+        experienceSection.appendChild(removeButton);
+    }
+
+    experienceSection.appendChild(document.getElementById('add-experience-button-container'));
+}
 
 
 function buildResume() {
