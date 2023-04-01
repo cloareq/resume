@@ -27,3 +27,7 @@ button {
 button:hover {
     opacity: 0.8;
 }
+
+#job_responsibilities input {
+    resize: both;
+}

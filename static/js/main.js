@@ -22,6 +22,8 @@ function addSchool() {
         educationSection.appendChild(hr);
     }
 
+    newFields.querySelectorAll('input').forEach(input => input.value = ''); // clear input values
+
     educationSection.appendChild(newFields);
 
     // Add a "Remove School" button next to the new school form
@@ -53,6 +55,12 @@ function addExperience() {
         experienceSection.appendChild(hr);
     }
 
+    // Clear input values
+    newFields.querySelectorAll('input').forEach(input => input.value = '');
+
+    // Clear textarea values
+    newFields.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+
     experienceSection.appendChild(newFields);
 
     // Add a "Remove Experience" button next to the new experience form
@@ -71,7 +79,6 @@ function addExperience() {
 
     experienceSection.appendChild(document.getElementById('add-experience-button-container'));
 }
-
 
 function buildResume() {
     const formData = new FormData(document.getElementById('resume-form'));

@@ -54,6 +54,7 @@ def get_experience_data(form):
     job_locations = form.getlist('job_location[]')
     start_dates = form.getlist('start_date[]')
     end_dates = form.getlist('end_date[]')
+    job_responsibilities = form.getlist('job_responsibilities[]')
 
     experience_data = []
     for i in range(len(company_names)):
@@ -62,11 +63,13 @@ def get_experience_data(form):
             'job_title': job_titles[i],
             'job_location': job_locations[i],
             'start_date': start_dates[i],
-            'end_date': end_dates[i]
+            'end_date': end_dates[i],
+            'job_responsibilities': job_responsibilities[i]
         }
         experience_data.append(experience)
 
     return experience_data
+
 
 def save_resume_data(data):
     # Create the resumes folder if it doesn't exist
