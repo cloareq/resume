@@ -22,6 +22,26 @@ def index():
 
 @app.route('/build_resume', methods=['POST'])
 def build_resume():
+    school_names = request.form.getlist('school_name[]')
+    school_locations = request.form.getlist('school_location[]')
+    degrees = request.form.getlist('degree[]')
+    majors = request.form.getlist('major[]')
+    gpas = request.form.getlist('gpa[]')
+    start_dates = request.form.getlist('start_date[]')
+    end_dates = request.form.getlist('end_date[]')
+
+    schools = []
+    for i in range(len(school_names)):
+        schools.append({
+            'school_name': school_names[i],
+            'school_location': school_locations[i],
+            'degree': degrees[i],
+            'major': majors[i],
+            'gpa': gpas[i],
+            'start_date': start_dates[i],
+            'end_date': end_dates[i],
+        })
+
     data = {
         'profile': {
             'name': request.form.get('name'),
@@ -30,15 +50,7 @@ def build_resume():
             'email': request.form.get('email'),
             'website': request.form.get('website'),
         },
-        'education': {
-            'school_name': request.form.get('school_name'),
-            'school_location': request.form.get('school_location'),
-            'degree': request.form.get('degree'),
-            'major': request.form.get('major'),
-            'gpa': request.form.get('gpa'),
-            'start_date': request.form.get('start_date'),
-            'end_date': request.form.get('end_date'),
-        }
+        'education': schools
     }
     
     # Save data to a JSON file
@@ -49,6 +61,7 @@ def build_resume():
         json.dump(data, file, indent=4)
     
     return f"Resume saved as {json_file_path.name}"
+
 
 
 
