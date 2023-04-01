@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.name }} {{ data.surname }} - Resume</title>
+    <style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 12pt;
+		}
+
+		h1 {
+			font-size: 16pt;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		h2 {
+			font-size: 14pt;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		h3 {
+			font-size: 12pt;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		.section {
+			margin-bottom: 15px;
+		}
+
+		.section-header {
+			border-bottom: 1px solid #ccc;
+			margin-bottom: 10px;
+			padding-bottom: 5px;
+		}
+
+		.section-body {
+			margin-left: 20px;
+		}
+
+		.school {
+			margin-bottom: 10px;
+		}
+
+		.school-header {
+			display: flex;
+			align-items: center;
+			margin-bottom: 5px;
+		}
+
+		.school-header h3 {
+			margin-right: 10px;
+		}
+
+		.school-details {
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 5px;
+		}
+
+		.school-details div {
+			flex: 1;
+		}
+
+		.school-gpa {
+			margin-bottom: 5px;
+		}
+
+		.experience {
+			margin-bottom: 10px;
+		}
+
+		.experience-header {
+			display: flex;
+			align-items: center;
+			margin-bottom: 5px;
+		}
+
+		.experience-header h3 {
+			margin-right: 10px;
+		}
+
+		.experience-details {
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 5px;
+		}
+
+		.experience-details div {
+			flex: 1;
+		}
+
+		.job-responsibilities {
+			margin-left: 20px;
+			margin-bottom: 5px;
+		}
+	</style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ data.name }} {{ data.surname }}</h1>
+        <p>{{ data.location }}</p>
+        <p>{{ data.email }}</p>
+        {% if data.website %}
+        <p>{{ data.website }}</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Education</h2>
+        {% for education in data.education %}
+        <div class="item">
+            <h3>{{ education.school_name }}</h3>
+            <p>{{ education.school_location }} | {{ education.start_date }} - {{ education.end_date }}</p>
+            <p>{{ education.degree }}, {{ education.major }}</p>
+            <p>GPA: {{ education.gpa }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>Experience</h2>
+        {% for experience in data.experience %}
+        <div class="item">
+            <h3>{{ experience.job_title }}</h3>
+            <p>{{ experience.company_name }} | {{ experience.job_location }} | {{ experience.start_date }} - {{ experience.end_date }}</p>
+            <li>{{ experience.job_responsibilities }}</li>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

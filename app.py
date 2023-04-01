@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 import json
 import os
+import pdfkit
 
 app = Flask(__name__)
 
@@ -22,7 +23,26 @@ def build_resume():
 
     save_resume_data(data)
 
-    return 'Resume saved!'
+    # Convert the resume data to a PDF
+    options = {
+        'page-size': 'Letter',
+        'margin-top': '0.75in',
+        'margin-right': '0.75in',
+        'margin-bottom': '0.75in',
+        'margin-left': '0.75in'
+    }
+
+    config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+    resume_html = render_template('resume.html', data=data)
+    resume_pdf = pdfkit.from_string(resume_html, False, options=options, configuration=config)
+    # Offer the PDF as a download
+    response = make_response(resume_pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=resume.pdf'
+
+    return response
+
+
 
 def get_education_data(form):
     school_names = form.getlist('school_name[]')
@@ -81,9 +101,6 @@ def save_resume_data(data):
 
     with open(filepath, 'w') as f:
         json.dump(data, f, indent=4)
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
