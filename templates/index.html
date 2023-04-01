@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Resume Builder</title>
+    <script>
+        function showSection(section) {
+            document.getElementById('profile-section').style.display = 'none';
+            document.getElementById('education-section').style.display = 'none';
+            document.getElementById(section).style.display = 'block';
+        }
+
+        function buildResume() {
+            const formData = new FormData(document.getElementById('resume-form'));
+
+            fetch('/build_resume', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert(result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Resume Builder</h1>
+    <nav>
+        <button onclick="showSection('profile-section')">Profile</button>
+        <button onclick="showSection('education-section')">Education</button>
+    </nav>
+    <form id="resume-form">
+        <div id="profile-section" style="display: none;">
+            <label for="name">Name:</label>
+            <input type="text" name="name" required>
+            <br>
+            <label for="surname">Surname:</label>
+            <input type="text" name="surname" required>
+            <br>
+            <label for="location">Location:</label>
+            <input type="text" name="location" required>
+            <br>
+            <label for="email">Email:</label>
+            <input type="text" name="email" required>
+            <br>
+            <label for="website">Website:</label>
+            <input type="text" name="website">
+            <br>
+        </div>
+        <div id="education-section" style="display: none;">
+            <label for="school_name">School Name:</label>
+            <input type="text" name="school_name" required>
+            <br>
+            <label for="school_location">School Location:</label>
+            <input type="text" name="school_location" required>
+            <br>
+            <label for="degree">Degree:</label>
+            <input type="text" name="degree" required>
+            <br>
+            <label for="major">Major:</label>
+            <input type="text" name="major" required>
+            <br>
+            <label for="gpa">GPA:</label>
+            <input type="text" name="gpa" required>
+            <br>
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" required>
+            <br>
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" required>
+            <br>
+        </div>
+        
+        <button type="button" onclick="buildResume()">Build Resume</button>
+    </form>
+</body>
+</html>
