@@ -16,7 +16,7 @@
             const formData = new FormData(document.getElementById('resume-form'));
 
             fetch('/build_resume', {
-                method: 'POST',
+                method: 'POST',f
                 body: formData,
             })
             .then(response => response.text())
