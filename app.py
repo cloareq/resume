@@ -103,4 +103,4 @@ def save_resume_data(data):
         json.dump(data, f, indent=4)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
