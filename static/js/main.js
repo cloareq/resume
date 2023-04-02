@@ -1,5 +1,5 @@
 function showSection(sectionId) {
-    const sections = ['profile-section', 'education-section', 'experience-section'];
+    const sections = ['profile-section', 'education-section', 'experience-section', 'skills-section'];
     for (const section of sections) {
         const element = document.getElementById(section);
         if (sectionId === section) {
@@ -79,6 +79,45 @@ function addExperience() {
 
     experienceSection.appendChild(document.getElementById('add-experience-button-container'));
 }
+
+function addSkill() {
+    const skillsContainer = document.getElementById('skill-fields');
+    const newFields = skillsContainer.cloneNode(true);
+    const hr = document.createElement('hr');
+    const skillsSection = document.getElementById('skills-section');
+
+    // Check if there are any skills already added
+    const skills = skillsSection.querySelectorAll('#skill-fields');
+    if (skills.length > 0) {
+        skillsSection.appendChild(hr);
+    }
+
+    // Clear input values
+    newFields.querySelectorAll('input').forEach(input => input.value = '');
+
+    // Clear textarea values
+    newFields.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+
+    skillsSection.appendChild(newFields);
+
+    // Add a "Remove Skill" button next to the new skill form
+    if (skills.length > 0) {
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.innerText = 'Remove Skill';
+        removeButton.onclick = function() {
+            // Remove the skill form and the "Remove Skill" button
+            skillsSection.removeChild(hr);
+            skillsSection.removeChild(newFields);
+            skillsSection.removeChild(removeButton);
+        };
+        skillsSection.appendChild(removeButton);
+    }
+
+    skillsSection.appendChild(document.getElementById('add-skill-button-container'));
+}
+
+  
 
 function buildResume() {
     const formData = new FormData(document.getElementById('resume-form'));

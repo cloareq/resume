@@ -18,7 +18,8 @@ def build_resume():
         'email': request.form['email'],
         'website': request.form['website'],
         'education': get_education_data(request.form),
-        'experience': get_experience_data(request.form)
+        'experience': get_experience_data(request.form),
+        'skills': get_skill_data(request.form)
     }
 
     save_resume_data(data)
@@ -41,6 +42,7 @@ def build_resume():
     response.headers['Content-Disposition'] = 'attachment; filename=resume.pdf'
 
     return response
+
 
 
 
@@ -89,6 +91,20 @@ def get_experience_data(form):
         experience_data.append(experience)
 
     return experience_data
+
+def get_skill_data(form):
+    skill_names = form.getlist('skill_name[]')
+    skill_lists = form.getlist('skill_list[]')
+
+    skill_data = []
+    for i in range(len(skill_names)):
+        skill = {
+            'skill_name': skill_names[i],
+            'skill_list': skill_lists[i]
+        }
+        skill_data.append(skill)
+
+    return skill_data
 
 
 def save_resume_data(data):
